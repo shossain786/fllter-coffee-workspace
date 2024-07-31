@@ -1,8 +1,10 @@
 import 'package:filtercoffee/modules/error/screens/network_error_screen.dart';
 import 'package:filtercoffee/modules/error/screens/page_error_screen.dart';
+import 'package:filtercoffee/modules/signin/login_bloc/login_bloc.dart';
 import 'package:filtercoffee/modules/signin/screens/signin_screen.dart';
 import 'package:filtercoffee/modules/splash/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RouterClassSection {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -15,14 +17,20 @@ class RouterClassSection {
       case '/login-screen':
         if (args is Map<String, dynamic>) {
           return MaterialPageRoute(
-            builder: (context) => SignInScreen(
-              arguments: args,
+            builder: (context) => BlocProvider(
+              create: (context) => LoginBloc(),
+              child: SignInScreen(
+                arguments: args,
+              ),
             ),
           );
         }
         return MaterialPageRoute(
-          builder: (context) => SignInScreen(
-            arguments: const {},
+          builder: (context) => BlocProvider(
+            create: (context) => LoginBloc(),
+            child: SignInScreen(
+              arguments: const {},
+            ),
           ),
         );
       case '/network-error-screen':
