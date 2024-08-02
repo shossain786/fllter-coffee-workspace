@@ -1,19 +1,16 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first, must_be_immutable
-import 'dart:async';
 
 import 'package:filtercoffee/global/blocs/internet/internet_cubit.dart';
 import 'package:filtercoffee/global/blocs/internet/internet_state.dart';
+import 'package:filtercoffee/global/widgets/auto_click_button_widget.dart';
+import 'package:filtercoffee/global/widgets/toast_notification.dart';
 import 'package:filtercoffee/modules/signin/login_bloc/login_bloc.dart';
 import 'package:filtercoffee/modules/signin/login_bloc/login_event.dart';
 import 'package:filtercoffee/modules/signin/login_bloc/login_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-StreamController usernameStreamController =
-    StreamController.broadcast(); // Single Stream Controller
-StreamController passwordStreamController =
-    StreamController.broadcast(); // Single Stream Controller
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
   late Map<String, dynamic> arguments;
@@ -64,6 +61,57 @@ class _SignInScreenState extends State<SignInScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  (state is LoginFormSuccessState)
+                      ? AutoClickButtonWidget.automaticTaskWorker(
+                          taskWaitDuration: Durations.medium3,
+                          task: () async {
+                            SharedPreferences sp =
+                                await SharedPreferences.getInstance();
+                            sp.setBool("isLoggedIn", true);
+                            ToastNotificationWidget.sucessNotification(
+                                context: context,
+                                title: null,
+                                description: state.successMessage);
+                            Navigator.pushReplacementNamed(
+                                context, '/dashboard-screen');
+                          },
+                          context: context)
+                      : Container(),
+                  (state is LoginFormFailedState)
+                      ? AutoClickButtonWidget.automaticTaskWorker(
+                          taskWaitDuration: Durations.medium3,
+                          task: () {
+                            if ((state.usernameErrorMessage != null) &&
+                                (state.usernameErrorMessage != null)) {
+                              ToastNotificationWidget.failedNotification(
+                                  context: context,
+                                  title: null,
+                                  description:
+                                      "Incorrect Username and Password");
+
+                              Navigator.pushReplacementNamed(
+                                  context, '/login-screen');
+                            } else if ((state.usernameErrorMessage == null) &&
+                                (state.usernameErrorMessage != null)) {
+                              ToastNotificationWidget.failedNotification(
+                                  context: context,
+                                  title: null,
+                                  description: state.passwordErrorMessage);
+                              Navigator.pushReplacementNamed(
+                                  context, '/login-screen');
+                            }
+                            if ((state.usernameErrorMessage != null) &&
+                                (state.usernameErrorMessage == null)) {
+                              ToastNotificationWidget.failedNotification(
+                                  context: context,
+                                  title: null,
+                                  description: state.usernameErrorMessage);
+                              Navigator.pushReplacementNamed(
+                                  context, '/login-screen');
+                            }
+                          },
+                          context: context)
+                      : Container(),
                   //! Username or Email
                   Container(
                     margin: const EdgeInsets.symmetric(
@@ -81,7 +129,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       keyboardType: TextInputType.text,
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
-                            RegExp(r'[a-zA-Z0-9]'))
+                            RegExp(r'[a-zA-Z0-9@.]'))
                       ],
                       decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.person_add_alt_sharp),
@@ -145,7 +193,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       obscuringCharacter: '*',
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
-                            RegExp(r'[a-zA-Z0-9]'))
+                            RegExp(r'[a-zA-Z0-9@]'))
                       ],
                       decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.password),

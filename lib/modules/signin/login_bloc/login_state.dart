@@ -28,8 +28,11 @@ class LoginFormSuccessState extends LoginState {
 }
 
 class LoginFormFailedState extends LoginState {
-  late String? errorMessage;
+  late String? usernameErrorMessage;
+  late String? passwordErrorMessage;
   LoginFormFailedState({
-    this.errorMessage,
+    this.usernameErrorMessage,
+    this.passwordErrorMessage,
   });
+  
 }

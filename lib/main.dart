@@ -1,4 +1,5 @@
 import 'package:filtercoffee/global/blocs/internet/internet_cubit.dart';
+import 'package:filtercoffee/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:filtercoffee/modules/signin/login_bloc/login_bloc.dart';
 import 'package:filtercoffee/router_file.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<LoginBloc>(
           create: (context) => LoginBloc(),
+        ),
+        BlocProvider<DashboardBloc>(
+          create: (context) => DashboardBloc(),
         ),
       ],
       child: const MaterialApp(
