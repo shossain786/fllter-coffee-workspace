@@ -42,7 +42,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           title: const Text("Dashboard Screen"),
           centerTitle: true,
         ),
-        body: Center(
+        body: const Center(
           child: Text("Dashboard Screen"),
         ),
       ),

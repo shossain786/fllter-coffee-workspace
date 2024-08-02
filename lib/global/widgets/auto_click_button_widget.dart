@@ -1,6 +1,5 @@
 import 'package:duration_button/duration_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class AutoClickButtonWidget {
   static automaticTaskWorker(
