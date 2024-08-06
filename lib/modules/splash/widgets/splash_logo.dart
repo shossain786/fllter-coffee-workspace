@@ -1,4 +1,4 @@
-import 'package:filtercoffee/imglist.dart';
+import 'package:filtercoffee/img_list.dart';
 import 'package:flutter/material.dart';
 
 class SplashLogo extends StatelessWidget {
