@@ -2,6 +2,9 @@
 
 import 'package:filtercoffee/global/blocs/internet/internet_cubit.dart';
 import 'package:filtercoffee/global/blocs/internet/internet_state.dart';
+import 'package:filtercoffee/global/widgets/my_drawer.dart';
+import 'package:filtercoffee/modules/dashboard/widgets/grid_view_widget.dart';
+import 'package:filtercoffee/modules/dashboard/widgets/list_view_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,6 +60,7 @@ class _DashboardScreenState extends State<DashboardScreen>
           Navigator.pushReplacementNamed(context, '/network-error-screen');
         }
       },
+      
       child: Scaffold(
         appBar: AppBar(
           systemOverlayStyle: SystemUiOverlayStyle.light,
@@ -87,6 +91,7 @@ class _DashboardScreenState extends State<DashboardScreen>
                 )
               ]),
         ),
+        drawer: MyDrawer.getDrawer(context),
         body: BlocProvider(
           create: (_) => dashboardBloc,
           child: BlocBuilder<DashboardBloc, DashboardState>(
@@ -191,8 +196,12 @@ class _DashboardScreenState extends State<DashboardScreen>
                   children: [
                     Flexible(
                       child: TabBarView(controller: _tabController, children: [
-                        listViewMethod(state),
-                        gridViewMethod(state)
+                        ListViewWidget(
+                          state: state,
+                        ),
+                        GridViewWidget(
+                          state: state,
+                        ),
                       ]),
                     ),
                   ],
@@ -217,46 +226,5 @@ class _DashboardScreenState extends State<DashboardScreen>
       ),
     );
   }
-
-  gridViewMethod(CountryLoadingSuccessState state) {
-    return GridView.builder(
-        shrinkWrap: true,
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemCount: state.countryListData!.length,
-        itemBuilder: (context, index) {
-          CountryListResponseData crd = state.countryListData![index];
-          return Container(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [Colors.blue, Colors.deepPurple],
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight)),
-              child: Center(
-                  child: Text(
-                crd.name!,
-                style: const TextStyle(color: Colors.white),
-              )));
-        });
-  }
-
-  listViewMethod(CountryLoadingSuccessState state) {
-    return ListView.builder(
-        shrinkWrap: true,
-        itemCount: state.countryListData!.length,
-        itemBuilder: (context, index) {
-          CountryListResponseData crd = state.countryListData![index];
-          return Container(
-              decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                      colors: [Colors.blue, Colors.deepPurple],
-                      begin: Alignment.bottomLeft,
-                      end: Alignment.topRight)),
-              child: ListTile(
-                  title: Text(
-                crd.name!,
-                style: const TextStyle(color: Colors.white),
-              )));
-        });
-  }
 }
+
