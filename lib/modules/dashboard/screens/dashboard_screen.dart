@@ -22,14 +22,17 @@ class DashboardScreen extends StatefulWidget {
   State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardScreenState extends State<DashboardScreen>
+    with SingleTickerProviderStateMixin {
   final List<String> items = [];
 
   CountryListResponseData? selectedValue;
   final TextEditingController textEditingController = TextEditingController();
   late DashboardBloc dashboardBloc;
+  late TabController _tabController;
   @override
   void initState() {
+    _tabController = TabController(length: 2, vsync: this);
     fetchCountry();
     super.initState();
   }
@@ -68,6 +71,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
           iconTheme: const IconThemeData(color: Colors.white),
           title: const Text("Dashboard Screen"),
           centerTitle: true,
+          bottom: TabBar(
+              indicatorColor: Colors.deepOrange,
+              labelColor: Colors.deepOrange,
+              unselectedLabelColor: Colors.white,
+              controller: _tabController,
+              tabs: const [
+                Icon(
+                  Icons.list,
+                  size: 50,
+                ),
+                Icon(
+                  Icons.grid_3x3,
+                  size: 50,
+                )
+              ]),
         ),
         body: BlocProvider(
           create: (_) => dashboardBloc,
@@ -169,14 +187,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     );
                   */
               if (state is CountryLoadingSuccessState) {
-                return ListView.builder(
-                  itemCount: state.countryListData!.length,
-                  itemBuilder: (context, index) {
-                    CountryListResponseData crd = state.countryListData![index];
-                    return ListTile(
-                      title: Text(crd.name!),
-                    );
-                  },
+                return Column(
+                  children: [
+                    Flexible(
+                      child: TabBarView(controller: _tabController, children: [
+                        listViewMethod(state),
+                        gridViewMethod(state)
+                      ]),
+                    ),
+                  ],
                 );
               }
               if (state is CountryLoadingState) {
@@ -197,5 +216,47 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
       ),
     );
+  }
+
+  gridViewMethod(CountryLoadingSuccessState state) {
+    return GridView.builder(
+        shrinkWrap: true,
+        gridDelegate:
+            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemCount: state.countryListData!.length,
+        itemBuilder: (context, index) {
+          CountryListResponseData crd = state.countryListData![index];
+          return Container(
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Colors.blue, Colors.deepPurple],
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight)),
+              child: Center(
+                  child: Text(
+                crd.name!,
+                style: const TextStyle(color: Colors.white),
+              )));
+        });
+  }
+
+  listViewMethod(CountryLoadingSuccessState state) {
+    return ListView.builder(
+        shrinkWrap: true,
+        itemCount: state.countryListData!.length,
+        itemBuilder: (context, index) {
+          CountryListResponseData crd = state.countryListData![index];
+          return Container(
+              decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                      colors: [Colors.blue, Colors.deepPurple],
+                      begin: Alignment.bottomLeft,
+                      end: Alignment.topRight)),
+              child: ListTile(
+                  title: Text(
+                crd.name!,
+                style: const TextStyle(color: Colors.white),
+              )));
+        });
   }
 }
