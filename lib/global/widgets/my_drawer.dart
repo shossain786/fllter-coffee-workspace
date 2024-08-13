@@ -16,7 +16,7 @@ class MyDrawer {
             DrawerHeader(child: Image.asset(ImageList.appLogo)),
             ListTile(
               onTap: () {
-                Navigator.pop(context);
+                Navigator.pop(context);// close the drawer
                 Navigator.pushReplacementNamed(context, '/dashboard-screen');
               },
               leading: const Icon(

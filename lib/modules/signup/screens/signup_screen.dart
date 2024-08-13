@@ -4,25 +4,26 @@ import 'package:filtercoffee/global/blocs/internet/internet_cubit.dart';
 import 'package:filtercoffee/global/blocs/internet/internet_state.dart';
 import 'package:filtercoffee/global/widgets/auto_click_button_widget.dart';
 import 'package:filtercoffee/global/widgets/toast_notification.dart';
-import 'package:filtercoffee/modules/signin/login_bloc/login_bloc.dart';
-import 'package:filtercoffee/modules/signin/login_bloc/login_event.dart';
-import 'package:filtercoffee/modules/signin/login_bloc/login_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SignInScreen extends StatefulWidget {
+import '../register_bloc/register_bloc.dart';
+import '../register_bloc/register_event.dart';
+import '../register_bloc/register_state.dart';
+
+class SignUpScreen extends StatefulWidget {
   late Map<String, dynamic> arguments;
-  SignInScreen({
+  SignUpScreen({
     super.key,
     required this.arguments,
   });
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<SignUpScreen> createState() => _SignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignInScreenState extends State<SignUpScreen> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool hidePassword = true;
@@ -53,7 +54,7 @@ class _SignInScreenState extends State<SignInScreen> {
               : ''),
           centerTitle: true,
         ),
-        body: BlocBuilder<LoginBloc, LoginState>(
+        body: BlocBuilder<RegisterBloc, RegisterState>(
           builder: (context, state) {
             return Center(
               child: Form(
@@ -62,7 +63,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  (state is LoginFormSuccessState)
+                  (state is RegisterFormSuccessState)
                       ? AutoClickButtonWidget.automaticTaskWorker(
                           taskWaitDuration: Durations.medium3,
                           task: () async {
@@ -71,46 +72,20 @@ class _SignInScreenState extends State<SignInScreen> {
                                 title: null,
                                 description: state.successMessage);
                             Navigator.pushReplacementNamed(
-                                context, '/dashboard-screen',
-                                arguments: {'title': "Dashboard Screen"});
+                                context, '/login-screen');
                           },
                           context: context)
                       : Container(),
-                  (state is LoginFormFailedState)
+                  (state is RegisterFormFailedState)
                       ? AutoClickButtonWidget.automaticTaskWorker(
                           taskWaitDuration: Durations.medium3,
                           task: () {
-                            if ((state.usernameErrorMessage != null) &&
-                                (state.usernameErrorMessage != null)) {
-                              ToastNotificationWidget.failedNotification(
-                                  context: context,
-                                  title: null,
-                                  description:
-                                      "Incorrect Username and Password");
-
-                              Navigator.pushReplacementNamed(
-                                  context, '/login-screen',
-                                  arguments: widget.arguments);
-                            } else if ((state.usernameErrorMessage == null) &&
-                                (state.usernameErrorMessage != null)) {
-                              ToastNotificationWidget.failedNotification(
-                                  context: context,
-                                  title: null,
-                                  description: state.passwordErrorMessage);
-                              Navigator.pushReplacementNamed(
-                                  context, '/login-screen',
-                                  arguments: widget.arguments);
-                            }
-                            if ((state.usernameErrorMessage != null) &&
-                                (state.usernameErrorMessage == null)) {
-                              ToastNotificationWidget.failedNotification(
-                                  context: context,
-                                  title: null,
-                                  description: state.usernameErrorMessage);
-                              Navigator.pushReplacementNamed(
-                                  context, '/login-screen',
-                                  arguments: widget.arguments);
-                            }
+                            ToastNotificationWidget.failedNotification(
+                                context: context,
+                                title: null,
+                                description: state.errorMessage);
+                            Navigator.pushReplacementNamed(
+                                context, '/Register-screen');
                           },
                           context: context)
                       : Container(),
@@ -122,8 +97,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     child: TextFormField(
                       onChanged: (value) {
-                        BlocProvider.of<LoginBloc>(context).add(
-                            LoginTextChangedEvent(
+                        BlocProvider.of<RegisterBloc>(context).add(
+                            RegisterTextChangedEvent(
                                 usernameValue: usernameController.text,
                                 passwordValue: passwordController.text));
                       },
@@ -152,7 +127,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               color: Colors.black,
                               fontWeight: FontWeight.w300,
                               fontSize: 10),
-                          errorText: (state is LoginFormInValidState)
+                          errorText: (state is RegisterFormInvalidState)
                               ? state.usernameError
                               : null,
                           errorStyle: const TextStyle(
@@ -184,8 +159,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     child: TextFormField(
                       onChanged: (value) {
-                        BlocProvider.of<LoginBloc>(context).add(
-                            LoginTextChangedEvent(
+                        BlocProvider.of<RegisterBloc>(context).add(
+                            RegisterTextChangedEvent(
                                 usernameValue: usernameController.text,
                                 passwordValue: passwordController.text));
                       },
@@ -220,7 +195,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               color: Colors.black,
                               fontWeight: FontWeight.w300,
                               fontSize: 10),
-                          errorText: (state is LoginFormInValidState)
+                          errorText: (state is RegisterFormInvalidState)
                               ? state.passwordError
                               : null,
                           errorStyle: const TextStyle(
@@ -251,8 +226,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     child: InkWell(
                       onTap: () {
-                        BlocProvider.of<LoginBloc>(context).add(
-                            LoginFormSubmitEvent(
+                        BlocProvider.of<RegisterBloc>(context).add(
+                            RegisterFormSubmitEvent(
                                 usernameData: usernameController.text,
                                 passwordData: passwordController.text));
                       },
@@ -265,7 +240,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 colors: [Colors.green, Colors.blue])),
                         child: const Center(
                           child: Text(
-                            "Login",
+                            "Sign Up",
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold),
@@ -282,10 +257,10 @@ class _SignInScreenState extends State<SignInScreen> {
                           foregroundColor: Colors.deepPurple,
                           textStyle: const TextStyle(fontSize: 14)),
                       onPressed: () {
-                        Navigator.pushNamed(context, '/register-screen',
-                            arguments: {'title': "Register Screen"});
+                        Navigator.pushNamed(context, '/login-screen',
+                            arguments: {'title': "Login Screen"});
                       },
-                      child: const Text("Register Here"))
+                      child: const Text("Login Here"))
                 ],
               )),
             );

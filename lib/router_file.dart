@@ -4,9 +4,12 @@ import 'package:filtercoffee/modules/error/screens/network_error_screen.dart';
 import 'package:filtercoffee/modules/error/screens/page_error_screen.dart';
 import 'package:filtercoffee/modules/signin/login_bloc/login_bloc.dart';
 import 'package:filtercoffee/modules/signin/screens/signin_screen.dart';
+import 'package:filtercoffee/modules/signup/screens/signup_screen.dart';
 import 'package:filtercoffee/modules/splash/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'modules/signup/register_bloc/register_bloc.dart';
 
 class RouterClassSection {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -35,6 +38,26 @@ class RouterClassSection {
             ),
           ),
         );
+      case '/register-screen':
+        if (args is Map<String, dynamic>) {
+          return MaterialPageRoute(
+            builder: (context) => BlocProvider(
+              create: (context) => RegisterBloc(),
+              child: SignUpScreen(
+                arguments: args,
+              ),
+            ),
+          );
+        }
+        return MaterialPageRoute(
+          builder: (context) => BlocProvider(
+            create: (context) => RegisterBloc(),
+            child: SignUpScreen(
+              arguments: const {},
+            ),
+          ),
+        );
+
       case '/dashboard-screen':
         if (args is Map<String, dynamic>) {
           return MaterialPageRoute(

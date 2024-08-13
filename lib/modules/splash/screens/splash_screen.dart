@@ -2,10 +2,10 @@
 
 import 'package:filtercoffee/global/blocs/internet/internet_cubit.dart';
 import 'package:filtercoffee/global/blocs/internet/internet_state.dart';
+import 'package:filtercoffee/global/utils/shared_preferences_helper.dart';
 import 'package:filtercoffee/modules/splash/widgets/splash_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,6 +15,7 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+   SessionHelper sp = SessionHelper();
   @override
   Widget build(BuildContext context) {
     return BlocListener<InternetCubit, InternetState>(
@@ -36,11 +37,13 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> redirectPage(BuildContext context) async {
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    if (sp.containsKey("isLoggedIn")) {
-       Navigator.pushReplacementNamed(context, '/dashboard-screen');
+   
+    if (sp.containsKey("isLoggedIn")!) {
+      Navigator.pushReplacementNamed(context, '/dashboard-screen',
+          arguments: {'title': "Dashboard Screen"});
     } else {
-       Navigator.pushReplacementNamed(context, '/login-screen');
+      Navigator.pushReplacementNamed(context, '/login-screen',
+          arguments: {'title': "Login Screen"});
     }
   }
 }
