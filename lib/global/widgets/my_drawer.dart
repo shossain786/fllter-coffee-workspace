@@ -1,3 +1,4 @@
+import 'package:filtercoffee/global/utils/shared_preferences_helper.dart';
 import 'package:filtercoffee/img_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class MyDrawer {
             DrawerHeader(child: Image.asset(ImageList.appLogo)),
             ListTile(
               onTap: () {
-                Navigator.pop(context);// close the drawer
+                Navigator.pop(context); // close the drawer
                 Navigator.pushReplacementNamed(context, '/dashboard-screen');
               },
               leading: const Icon(
@@ -84,6 +85,28 @@ class MyDrawer {
                   ),
                 ),
               ],
+            ),
+            ListTile(
+              onTap: () {
+                SessionHelper().remove("isLoggedIn");
+                Navigator.pop(context); // close the drawer
+                Navigator.pushReplacementNamed(context, '/login-screen',
+                    arguments: {'title': "Login Screen"});
+              },
+              leading: const Icon(
+                Icons.logout,
+                size: 35,
+                color: Colors.white,
+              ),
+              title: const Text(
+                "Logout",
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+              trailing: const Icon(
+                Icons.arrow_forward_ios,
+                size: 35,
+                color: Colors.white,
+              ),
             ),
           ],
         ),

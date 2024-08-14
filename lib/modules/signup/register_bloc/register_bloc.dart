@@ -52,7 +52,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
             errorMessage: "Data already exists, please login."));
       } else {
         try {
-          await db.insert("UserCredData", {
+          db.insert("UserCredData", {
             'username': event.usernameData,
             'password': event.passwordData,
           });

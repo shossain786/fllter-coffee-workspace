@@ -26,8 +26,8 @@ class DatabaseHelper {
   // Method to initialize the database
   Future<Database> _initDatabase() async {
     // Get the path to the database file
-    String databasePath = await getDatabasesPath();
-    String path = join(databasePath, 'digital_khata.db');
+    String databasePath = await getDatabasesPath(); // data/dbpath
+    String path = join(databasePath, 'filter_coffee.db');// data/dbpath/filter_coffee.db
 
     // Open the database
     return await openDatabase(
@@ -44,6 +44,23 @@ class DatabaseHelper {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT,
         password TEXT
+      )
+    ''');
+    await db.execute('''
+      CREATE TABLE IF NOT EXISTS CustomersCredData (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        age TEXT,
+        contact TEXT,
+        city TEXT,
+        address TEXT,
+        pincode TEXT,
+        district TEXT,
+        area TEXT,
+        dob TEXT,
+        gender TEXT,
+        occupation TEXT,
+        married INTEGER
       )
     ''');
   }

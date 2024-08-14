@@ -44,10 +44,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       );
 
       if (result != null && result.isNotEmpty) {
-        LoggerUtil().errorData("Data already exists, please login");
+        LoggerUtil().errorData("Login Successfull");
         sp.setBool("isLoggedIn", true);
         emit(LoginFormSuccessState(
-            successMessage: "Data already exists, please login."));
+            successMessage: "Login Successfull"));
       } else {
         LoggerUtil().errorData("Data not available");
         emit(LoginFormFailedState(

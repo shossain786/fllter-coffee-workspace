@@ -2,6 +2,7 @@
 
 import 'package:filtercoffee/global/blocs/internet/internet_cubit.dart';
 import 'package:filtercoffee/global/blocs/internet/internet_state.dart';
+import 'package:filtercoffee/global/utils/utillity_section.dart';
 import 'package:filtercoffee/global/widgets/auto_click_button_widget.dart';
 import 'package:filtercoffee/global/widgets/toast_notification.dart';
 import 'package:filtercoffee/modules/signin/login_bloc/login_bloc.dart';
@@ -38,6 +39,7 @@ class _SignInScreenState extends State<SignInScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           systemOverlayStyle: SystemUiOverlayStyle.light,
           foregroundColor: Colors.white,
           flexibleSpace: Container(
@@ -257,7 +259,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                 passwordData: passwordController.text));
                       },
                       child: Container(
-                        height: 50,
+                        height: context.screenSize.height * 0.05,
+                        width: context.screenSize.width,
                         decoration: const BoxDecoration(
                             gradient: LinearGradient(
                                 begin: Alignment.bottomLeft,

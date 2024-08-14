@@ -3,7 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class SessionHelper {
   static final SessionHelper _instance =
       SessionHelper._internal();
-  SharedPreferences? _preferences;
+  SharedPreferences? _preferences;// SharedPreferences instance variable
 
   // Private constructor
   SessionHelper._internal();

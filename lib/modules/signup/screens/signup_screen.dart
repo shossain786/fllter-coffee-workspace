@@ -72,7 +72,8 @@ class _SignInScreenState extends State<SignUpScreen> {
                                 title: null,
                                 description: state.successMessage);
                             Navigator.pushReplacementNamed(
-                                context, '/login-screen');
+                                context, '/login-screen',
+                                arguments: {'title': "Login Screen"});
                           },
                           context: context)
                       : Container(),

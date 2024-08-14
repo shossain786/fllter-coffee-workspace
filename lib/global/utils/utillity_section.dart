@@ -30,9 +30,9 @@ extension StringCasingExtension on String {
 }
 
 extension ScreenSize on BuildContext {
-  double get screenWidth => MediaQuery.of(this).size.width;
-  double get screenHeight => MediaQuery.of(this).size.height;
-  Size get screenSize => MediaQuery.of(this).size;
+  double get screenWidth => MediaQuery.of(this).size.width;// device width
+  double get screenHeight => MediaQuery.of(this).size.height; // device height
+  Size get screenSize => MediaQuery.of(this).size;// device Size
 }
 
 Map<int, String> monthsInYear = {
