@@ -18,6 +18,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
     //! Map Event 2 with States according to logic
     on<RegisterFormSubmitEvent>(_onFormSubmitEvent);
+
+     //! Map Event 3 with States according to logic
+    on<TogglePasswordRegisterEvent>(_togglePasswordEvent);
   }
 
   void _onTextChangedEvent(
@@ -71,4 +74,12 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           errorMessage: "Registration failed: ${e.toString()}"));
     }
   }
+
+ void _togglePasswordEvent(
+      TogglePasswordRegisterEvent event, Emitter<RegisterState> emit) {
+    late bool passwordStatus;
+    passwordStatus = !event.passwordStatus;
+    emit(ToggleChangeRegisterStatus(successMessage: passwordStatus));
+  }
 }
+

@@ -15,6 +15,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<LoginTextChangedEvent>(_onTextChangedEvent);
     //! Map Event 2 with States according to logic
     on<LoginFormSubmitEvent>(_loginProcess);
+    //! Map Event 2 with States according to logic
+    on<TogglePasswordEvent>(_togglePasswordEvent);
   }
 
   void _onTextChangedEvent(
@@ -46,8 +48,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       if (result != null && result.isNotEmpty) {
         LoggerUtil().errorData("Login Successfull");
         sp.setBool("isLoggedIn", true);
-        emit(LoginFormSuccessState(
-            successMessage: "Login Successfull"));
+        emit(LoginFormSuccessState(successMessage: "Login Successfull"));
       } else {
         LoggerUtil().errorData("Data not available");
         emit(LoginFormFailedState(
@@ -60,5 +61,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           usernameErrorMessage: "An error occurred",
           passwordErrorMessage: "An error occurred"));
     }
+  }
+
+  void _togglePasswordEvent(
+      TogglePasswordEvent event, Emitter<LoginState> emit) {
+    late bool passwordStatus;
+    passwordStatus = !event.passwordStatus;
+    emit(ToggleChangeStatus(successMessage: passwordStatus));
   }
 }

@@ -18,3 +18,10 @@ class LoginFormSubmitEvent extends LoginEvent {
     required this.passwordData,
   });
 }
+//! Event 3
+class TogglePasswordEvent extends LoginEvent {
+late bool passwordStatus;
+  TogglePasswordEvent({
+    required this.passwordStatus,
+  });
+}

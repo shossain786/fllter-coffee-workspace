@@ -32,3 +32,11 @@ class RegisterFormSubmitEvent extends RegisterEvent {
     required this.passwordData,
   });
 }
+
+//! Event 3
+class TogglePasswordRegisterEvent extends RegisterEvent {
+late bool passwordStatus;
+  TogglePasswordRegisterEvent({
+    required this.passwordStatus,
+  });
+}

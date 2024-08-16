@@ -3,6 +3,8 @@
 import 'package:filtercoffee/global/blocs/internet/internet_cubit.dart';
 import 'package:filtercoffee/global/blocs/internet/internet_state.dart';
 import 'package:filtercoffee/global/widgets/auto_click_button_widget.dart';
+import 'package:filtercoffee/global/widgets/custom_app_bar.dart';
+import 'package:filtercoffee/global/widgets/form_widgets.dart';
 import 'package:filtercoffee/global/widgets/toast_notification.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,18 +14,12 @@ import '../register_bloc/register_bloc.dart';
 import '../register_bloc/register_event.dart';
 import '../register_bloc/register_state.dart';
 
-class SignUpScreen extends StatefulWidget {
+class SignUpScreen extends StatelessWidget {
   late Map<String, dynamic> arguments;
   SignUpScreen({
     super.key,
     required this.arguments,
   });
-
-  @override
-  State<SignUpScreen> createState() => _SignInScreenState();
-}
-
-class _SignInScreenState extends State<SignUpScreen> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool hidePassword = true;
@@ -38,22 +34,7 @@ class _SignInScreenState extends State<SignUpScreen> {
         }
       },
       child: Scaffold(
-        appBar: AppBar(
-          systemOverlayStyle: SystemUiOverlayStyle.light,
-          foregroundColor: Colors.white,
-          flexibleSpace: Container(
-            decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Colors.blue, Colors.deepPurple],
-                    begin: Alignment.bottomLeft,
-                    end: Alignment.topRight)),
-          ),
-          iconTheme: const IconThemeData(color: Colors.white),
-          title: Text(widget.arguments.containsKey("title")
-              ? widget.arguments['title']
-              : ''),
-          centerTitle: true,
-        ),
+        appBar: CustomAppBarWidget.customAppBar(arguments: arguments),
         body: BlocBuilder<RegisterBloc, RegisterState>(
           builder: (context, state) {
             return Center(
@@ -96,130 +77,72 @@ class _SignInScreenState extends State<SignUpScreen> {
                         vertical: 10, horizontal: 30),
                     padding:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    child: TextFormField(
-                      onChanged: (value) {
+                    child: FormWidgets.buildTextFormField(
+                      context,
+                      controller: usernameController,
+                      onChanged: () {
                         BlocProvider.of<RegisterBloc>(context).add(
                             RegisterTextChangedEvent(
                                 usernameValue: usernameController.text,
                                 passwordValue: passwordController.text));
                       },
-                      controller: usernameController,
-                      keyboardType: TextInputType.text,
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(
                             RegExp(r'[a-zA-Z0-9@.]'))
                       ],
-                      decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.person_add_alt_sharp),
-                          prefixIconColor: Colors.green,
-                          labelText: "Username/E-Mail",
-                          labelStyle: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
-                          helperText:
-                              "Please Enter data in 'xxxxyew@fe.com' format",
-                          helperStyle: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 10),
-                          hintText: "xxxxyew@fe.com",
-                          hintStyle: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 10),
-                          errorText: (state is RegisterFormInvalidState)
-                              ? state.usernameError
-                              : null,
-                          errorStyle: const TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 10),
-                          errorBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.red, width: 2)),
-                          enabledBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 2)),
-                          disabledBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 2)),
-                          focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 2)),
-                          border: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 2))),
+                      errorText: (state is RegisterFormInvalidState)
+                          ? state.usernameError
+                          : null,
+                      labelText: "Username/E-Mail",
+                      helperText:
+                          "Please Enter data in 'xxxxyew@fe.com' format",
+                      hintText: "xxxxyew@fe.com",
                     ),
                   ),
+
                   //! Password
                   Container(
                     margin: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 30),
                     padding:
                         const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                    child: TextFormField(
-                      onChanged: (value) {
-                        BlocProvider.of<RegisterBloc>(context).add(
-                            RegisterTextChangedEvent(
-                                usernameValue: usernameController.text,
-                                passwordValue: passwordController.text));
-                      },
-                      controller: passwordController,
-                      keyboardType: TextInputType.text,
-                      obscureText: hidePassword,
-                      obscuringCharacter: '*',
-                      inputFormatters: [
-                        FilteringTextInputFormatter.allow(
-                            RegExp(r'[a-zA-Z0-9@]'))
-                      ],
-                      decoration: InputDecoration(
-                          prefixIcon: const Icon(Icons.password),
-                          prefixIconColor: Colors.green,
-                          suffixIcon: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  hidePassword = !hidePassword;
-                                });
-                              },
-                              child: Icon((hidePassword == true)
-                                  ? Icons.visibility
-                                  : Icons.visibility_off)),
-                          suffixIconColor: Colors.green,
-                          labelText: "Password",
-                          labelStyle: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
-                          hintText: "xxxxyew",
-                          hintStyle: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 10),
-                          errorText: (state is RegisterFormInvalidState)
-                              ? state.passwordError
-                              : null,
-                          errorStyle: const TextStyle(
-                              color: Colors.red,
-                              fontWeight: FontWeight.w300,
-                              fontSize: 10),
-                          errorBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.red, width: 2)),
-                          enabledBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 2)),
-                          disabledBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 2)),
-                          focusedBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 2)),
-                          border: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.black, width: 2))),
-                    ),
+                    child: FormWidgets.buildTextFormField(context,
+                        controller: passwordController, onChanged: () {
+                      BlocProvider.of<RegisterBloc>(context).add(
+                          RegisterTextChangedEvent(
+                              usernameValue: usernameController.text,
+                              passwordValue: passwordController.text));
+                    },
+                        obscureText: (state is ToggleChangeRegisterStatus)
+                            ? state.successMessage
+                            : hidePassword,
+                        obscuringCharacter: '*',
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(
+                              RegExp(r'[a-zA-Z0-9@]'))
+                        ],
+                        errorText: (state is RegisterFormInvalidState)
+                            ? state.passwordError
+                            : null,
+                        labelText: "Password",
+                        hintText: "hjhs@123",
+                        suffixIcon: InkWell(
+                            onTap: () {
+                              BlocProvider.of<RegisterBloc>(context).add(
+                                  TogglePasswordRegisterEvent(
+                                      passwordStatus:
+                                          (state is ToggleChangeRegisterStatus)
+                                              ? state.successMessage
+                                              : hidePassword));
+                            },
+                            child: Icon((((state is ToggleChangeRegisterStatus)
+                                        ? state.successMessage
+                                        : hidePassword) ==
+                                    true)
+                                ? Icons.visibility
+                                : Icons.visibility_off))),
                   ),
+
                   Container(
                     margin: const EdgeInsets.symmetric(
                         vertical: 10, horizontal: 30),

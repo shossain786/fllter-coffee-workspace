@@ -1,17 +1,19 @@
+// ignore_for_file: must_be_immutable
+
+import 'package:filtercoffee/global/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../global/blocs/internet/internet_cubit.dart';
 import '../../../global/blocs/internet/internet_state.dart';
 
-class CustomerListScreen extends StatefulWidget {
-  const CustomerListScreen({super.key});
+class CustomerListScreen extends StatelessWidget {
+  late Map<String, dynamic> arguments;
+  CustomerListScreen({
+    super.key,
+    required this.arguments,
+  });
 
-  @override
-  State<CustomerListScreen> createState() => _CustomerListScreenState();
-}
-
-class _CustomerListScreenState extends State<CustomerListScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<InternetCubit, InternetState>(
@@ -21,7 +23,9 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
           Navigator.pushReplacementNamed(context, '/network-error-screen');
         }
       },
-      child: Container(),
+      child: Scaffold(
+        appBar: CustomAppBarWidget.customAppBar(arguments: arguments),
+      ),
     );
   }
 }

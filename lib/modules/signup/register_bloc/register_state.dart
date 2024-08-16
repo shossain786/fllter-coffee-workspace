@@ -48,3 +48,11 @@ final class RegisterFormFailedState extends RegisterState {
     this.errorMessage,
   });
 }
+
+
+class ToggleChangeRegisterStatus extends RegisterState {
+  late bool successMessage;
+  ToggleChangeRegisterStatus({
+    required this.successMessage,
+  });
+}

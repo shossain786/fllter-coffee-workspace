@@ -34,5 +34,11 @@ class LoginFormFailedState extends LoginState {
     this.usernameErrorMessage,
     this.passwordErrorMessage,
   });
-  
+}
+
+class ToggleChangeStatus extends LoginState {
+  late bool successMessage;
+  ToggleChangeStatus({
+    required this.successMessage,
+  });
 }

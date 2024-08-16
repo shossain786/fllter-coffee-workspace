@@ -1,3 +1,6 @@
+import 'package:filtercoffee/modules/customers/screens/add_customer_screen.dart';
+import 'package:filtercoffee/modules/customers/screens/customer_list_screen.dart';
+import 'package:filtercoffee/modules/customers/screens/edit_customer_screen.dart';
 import 'package:filtercoffee/modules/dashboard/bloc/dashboard_bloc.dart';
 import 'package:filtercoffee/modules/dashboard/screens/dashboard_screen.dart';
 import 'package:filtercoffee/modules/error/screens/network_error_screen.dart';
@@ -87,6 +90,47 @@ class RouterClassSection {
         }
         return MaterialPageRoute(
           builder: (context) => NetworkErrorScreen(
+            arguments: const {},
+          ),
+        );
+      
+
+       case '/customer-list':
+        if (args is Map<String, dynamic>) {
+          return MaterialPageRoute(
+            builder: (context) => CustomerListScreen(
+              arguments: args,
+            ),
+          );
+        }
+        return MaterialPageRoute(
+          builder: (context) => CustomerListScreen(
+            arguments: const {},
+          ),
+        );
+      case '/add-customer':
+        if (args is Map<String, dynamic>) {
+          return MaterialPageRoute(
+            builder: (context) => AddCustomerScreen(
+              arguments: args,
+            ),
+          );
+        }
+        return MaterialPageRoute(
+          builder: (context) => AddCustomerScreen(
+            arguments: const {},
+          ),
+        );
+      case '/edit-customer':
+        if (args is Map<String, dynamic>) {
+          return MaterialPageRoute(
+            builder: (context) => EditCustomerScreen(
+              arguments: args,
+            ),
+          );
+        }
+        return MaterialPageRoute(
+          builder: (context) => EditCustomerScreen(
             arguments: const {},
           ),
         );

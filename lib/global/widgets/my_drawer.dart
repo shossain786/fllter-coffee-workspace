@@ -51,7 +51,11 @@ class MyDrawer {
               collapsedIconColor: Colors.white,
               children: [
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context); // close the drawer
+                    Navigator.pushNamed(context, '/add-customer',
+                        arguments: {'title': "Add Customer"});
+                  },
                   leading: const Icon(
                     Icons.person_add,
                     size: 35,
@@ -68,7 +72,11 @@ class MyDrawer {
                   ),
                 ),
                 ListTile(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context); // close the drawer
+                    Navigator.pushNamed(context, '/customer-list',
+                        arguments: {'title': "Customers List"});
+                  },
                   leading: const Icon(
                     Icons.list,
                     size: 35,
