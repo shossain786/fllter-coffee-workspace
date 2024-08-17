@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:filtercoffee/modules/error/widgets/page_error_widget.dart';
 import 'package:flutter/material.dart';
 
 class PageErrorScreen extends StatelessWidget {
@@ -12,7 +13,11 @@ class PageErrorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(child: Text("Page Error"),),
+      body: Center(
+        child: PageErrorWidget(),
+      ),
     );
   }
 }
+
+

@@ -1,8 +1,8 @@
 import 'package:filtercoffee/img_list.dart';
 import 'package:flutter/material.dart';
 
-class SplashLogo extends StatelessWidget {
-  const SplashLogo({
+class PageErrorWidget extends StatelessWidget {
+  const PageErrorWidget({
     super.key,
   });
 
@@ -21,7 +21,7 @@ class SplashLogo extends StatelessWidget {
                 colors: [Colors.deepOrange, Colors.yellow],
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight)),
-        child: Image.asset(ImageList.appLogo),
+        child: Image.asset(ImageList.pageNotFoundImage),
       ),
     );
   }

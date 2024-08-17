@@ -8,20 +8,25 @@ class FormWidgets {
       String obscuringCharacter = '•',
       List<TextInputFormatter>? inputFormatters,
       Widget? suffixIcon,
+      Widget? prefixIcon,
       String? labelText,
       String? hintText,
       String? errorText,
       String? helperText,
+      TextInputType? keyboardType,
+      int? maxLength,
       TextEditingController? controller}) {
     return TextFormField(
       onChanged: (value) => onChanged,
       controller: controller,
-      keyboardType: TextInputType.text,
+      keyboardType: keyboardType,
       obscureText: (obscureText != null) ? obscureText : false,
       obscuringCharacter: obscuringCharacter,
       inputFormatters: inputFormatters,
+      maxLength: maxLength,
       decoration: InputDecoration(
-          prefixIcon: const Icon(Icons.password),
+        counterText: "",
+          prefixIcon: prefixIcon,
           prefixIconColor: Colors.green,
           suffixIcon: (suffixIcon != null) ? suffixIcon : null,
           suffixIconColor: Colors.green,
@@ -49,5 +54,5 @@ class FormWidgets {
               borderSide: BorderSide(color: Colors.black, width: 2))),
     );
   }
-
+ 
 }

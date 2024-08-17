@@ -1,8 +1,8 @@
 // ignore_for_file: must_be_immutable
 
-
 import 'package:filtercoffee/global/blocs/internet/internet_cubit.dart';
 import 'package:filtercoffee/global/blocs/internet/internet_state.dart';
+import 'package:filtercoffee/modules/error/widgets/network_error_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,7 +29,7 @@ class _NetworkErrorScreenState extends State<NetworkErrorScreen> {
       },
       child: const Scaffold(
         body: Center(
-          child: Text("Network Error"),
+          child: NetworkErrorWidget(),
         ),
       ),
     );
